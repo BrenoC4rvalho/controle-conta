@@ -13,6 +13,9 @@ namespace controleContas
         private Cliente titular;
         private Agencia agencia;
 
+        static decimal saldoDeTodasAsContas = 0.0m;
+        static Conta contaComMaiorValor = null;
+
         public Conta(int numero, decimal saldo, Cliente titular, Agencia agencia)
         {
             this.numero = numero;
@@ -28,6 +31,8 @@ namespace controleContas
 
             this.titular = titular;
             this.agencia = agencia;
+            saldoDeTodasAsContas += saldo;
+            this.ContaComMaiorValor();
         }
 
         public int NumeroProp {
@@ -46,6 +51,8 @@ namespace controleContas
                 if (value >= 0.0m)
                 {
                     saldo = value;
+                    saldoDeTodasAsContas += value;
+                    this.ContaComMaiorValor();
                 } else
                 {
                     Console.WriteLine("O saldo não pode ser definido como negativo");
@@ -70,6 +77,8 @@ namespace controleContas
             if(valor > 0.0m)
             {
                 saldo += valor;
+                saldoDeTodasAsContas += valor;
+                this.ContaComMaiorValor();
             }
         }
 
@@ -79,6 +88,7 @@ namespace controleContas
             {
                 saldo -= valor;
                 saldo -= 0.10m; // taxa de saque
+                saldoDeTodasAsContas -= valor - 0.10m;
             }
             else
             {
@@ -93,11 +103,31 @@ namespace controleContas
                 saldo -= valor;
                 contaDestino.Deposito(valor);
 
-                // exibir saldo das duas contas
+                Console.WriteLine("Transferência de {0:C2} realizada com sucesso", valor);
+                Console.WriteLine("Saldo atual da conta {0}: {1:C2}", numero, saldo);
+                Console.WriteLine("Saldo atual da conta {0}: {1:C2}", contaDestino.NumeroProp, contaDestino.SaldoProp);
+                this.ContaComMaiorValor();
+                this.ContaComMaiorValor(contaDestino);
             }
             else
             {
                 Console.WriteLine("Valor inválido para transferência");
+            }
+        }
+
+        public void ContaComMaiorValor()
+        {
+            if (contaComMaiorValor == null || saldo > contaComMaiorValor.SaldoProp)
+            {
+                contaComMaiorValor = this;
+            }
+        }
+
+        public void ContaComMaiorValor(Conta conta)
+        {
+            if (contaComMaiorValor == null || conta.saldo > contaComMaiorValor.SaldoProp)
+            {
+                contaComMaiorValor = conta;
             }
         }
     }

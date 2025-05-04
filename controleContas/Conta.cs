@@ -130,5 +130,15 @@ namespace controleContas
                 contaComMaiorValor = conta;
             }
         }
+
+        public static Conta ObterContaComMaiorSaldo()
+        {
+            return contaComMaiorValor;
+        }
+
+        public static decimal ObterSaldoTotalDasContas()
+        {
+            return saldoDeTodasAsContas;
+        }
     }
 }

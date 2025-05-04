@@ -11,8 +11,9 @@ namespace controleContas
         private int numero;
         private decimal saldo;
         private Cliente titular;
+        private Agencia agencia;
 
-        public Conta(int numero, decimal saldo, Cliente titular)
+        public Conta(int numero, decimal saldo, Cliente titular, Agencia agencia)
         {
             this.numero = numero;
 
@@ -26,6 +27,7 @@ namespace controleContas
             }
 
             this.titular = titular;
+            this.agencia = agencia;
         }
 
         public int NumeroProp {
@@ -51,6 +53,18 @@ namespace controleContas
             }
         }
 
+        public Cliente ClienteProp
+        {
+            get => titular;
+            set => titular = value;
+        }
+
+        public Agencia AgenciaProp
+        {
+            get => agencia;
+            set => agencia = value;
+        }
+
         public void Deposito(decimal valor)
         {
             if(valor > 0.0m)
@@ -72,7 +86,7 @@ namespace controleContas
             }
         }
 
-        public void transferencia(Conta contaDestino, decimal valor)
+        public void Transferencia(Conta contaDestino, decimal valor)
         {
             if (valor > 0.0m && (valor) < saldo)
             {
